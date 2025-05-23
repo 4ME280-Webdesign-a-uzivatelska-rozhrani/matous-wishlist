@@ -1,6 +1,6 @@
   - Canon EOS R1  
     https://www.fotoskoda.cz/canon-eos-r1/  
-    https://www.fotoskoda.cz/cachepict/053000630000/053046360000/053046362103_w.jpg
+    https://static10.fotoskoda.cz/data/cache/thumb_500-500-12-0/products/211580/1721215783/canon_eos_r1_5.webp?s=91a586ee4661b97d788a365185371236
   - Canon RF 85 mm f/1.2 L USM DS  
     https://www.fotoskoda.cz/canon-rf-85-mm-f-1-2-l-usm-ds/  
     https://www.fotoskoda.cz/cachepict/053000570000/053045840000/053045840801_w.jpg
