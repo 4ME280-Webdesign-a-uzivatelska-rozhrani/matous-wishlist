@@ -66,7 +66,12 @@
           if (lines[i].startsWith('-')) {
             const title = lines[i].replace(/^- /, '');
             const link = lines[i+1];
-            const image = lines[i+2];
+            let imageRaw = lines[i+2];
+
+            // Extrahuj URL z různých formátů (čistý odkaz, markdown, atd.)
+            let imageMatch = imageRaw.match(/\((https?:\/\/.*?)\)/) || imageRaw.match(/\[(https?:\/\/.*?)\]/) || imageRaw.match(/(https?:\/\/\S+)/);
+            const image = imageMatch ? imageMatch[1] : '';
+
             items.push({ title, link, image });
             i += 2;
           }
