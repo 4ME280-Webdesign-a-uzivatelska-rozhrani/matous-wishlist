@@ -1,9 +1,10 @@
+@@ -0,0 +1,128 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Wishlist Matouše 🎁</title>
+  <title>Matoušův Wishlist 🎁</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
@@ -26,3 +27,103 @@
     .reserved {
       font-weight: 500;
       color: #444;
+    }
+    .clear {
+      clear: both;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center mb-4">🎁 Wishlist Matouše</h1>
+    <div id="wishlist"></div>
+  </div>
+
+  <script>
+    const BIN_ID = '683040948960c979a5a00b8d';
+    const API_KEY = '$2a$10$5DRJeXgvJ51hdZLqY5dageFQbTD6qCQGuO3KsWS6iRTiZpmOrUwiG';
+    const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+    const BIN_LATEST = `${BIN_URL}/latest`;
+
+    let data = [];
+
+    function renderWishlist(items) {
+      const container = document.getElementById('wishlist');
+      container.innerHTML = '';
+
+      items.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'gift';
+
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = item.title;
+
+        const title = document.createElement('h5');
+        const link = document.createElement('a');
+        link.href = item.link;
+        link.target = '_blank';
+        link.textContent = item.title;
+        title.appendChild(link);
+
+        const reserved = document.createElement('div');
+        reserved.className = 'reserved';
+        reserved.innerHTML = `Rezervoval: <strong>${item.reservedBy || 'nikdo'}</strong>`;
+
+        const input = document.createElement('input');
+        input.placeholder = 'Vaše jméno';
+        input.className = 'form-control mt-2';
+        input.value = item.reservedBy;
+
+        const button = document.createElement('button');
+        button.className = 'btn btn-primary btn-sm mt-2';
+        button.textContent = 'Rezervovat';
+        button.onclick = () => {
+          data[index].reservedBy = input.value.trim();
+          updateBin(data);
+        };
+
+        div.appendChild(img);
+        div.appendChild(title);
+        div.appendChild(reserved);
+        div.appendChild(input);
+        div.appendChild(button);
+        div.appendChild(document.createElement('div')).className = 'clear';
+
+        container.appendChild(div);
+      });
+    }
+
+    function updateBin(newData) {
+      fetch(BIN_URL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': API_KEY
+        },
+        body: JSON.stringify(newData)
+      })
+      .then(res => res.json())
+      .then(json => {
+        alert('✅ Uloženo!');
+        renderWishlist(newData);
+      })
+      .catch(err => alert('❌ Chyba při ukládání: ' + err.message));
+    }
+
+    fetch(BIN_LATEST, {
+      headers: {
+        'X-Master-Key': API_KEY
+      }
+    })
+    .then(res => res.json())
+    .then(json => {
+      data = json.record;
+      renderWishlist(data);
+    })
+    .catch(err => {
+      document.getElementById('wishlist').textContent = '❌ Nepodařilo se načíst wishlist: ' + err.message;
+    });
+  </script>
+</body>
+</html>
